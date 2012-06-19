@@ -30,12 +30,7 @@ public class FunctionImportMvelTest extends AbstractRulesTest {
     
     @Before
     public void initialize() {
-        try {
-            super.initialize();
-        } catch (Throwable t) {
-            log.error("When using MVEL dialect, the function import fails. " 
-                    + "Or perhaps the function fails to compile.", t);
-        }
+        super.initialize();
     }
     
     /**
@@ -43,12 +38,7 @@ public class FunctionImportMvelTest extends AbstractRulesTest {
      */
     @Test
     public void shouldCloneMessage() throws FactMarshallingException {
-        try {
-            knowledgeEnvironment.knowledgeSession.fireAllRules();
-        } catch (Throwable t) {
-            log.error("Given that the rules file won't load, this will definitely fail.", t);
-        }
-        
+        knowledgeEnvironment.knowledgeSession.fireAllRules();
     }
     
 }
