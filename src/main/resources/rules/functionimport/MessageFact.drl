@@ -1,0 +1,5 @@
+package mypackage
+
+declare Message
+    Text: String
+end

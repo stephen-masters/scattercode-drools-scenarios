@@ -1,0 +1,15 @@
+package mypackage
+
+rule "Say hello"
+    dialect "mvel"
+    lock-on-active true
+    when
+        # Always
+    then
+        Message originalMessage = new Message();
+        originalMessage.Text = "Hello, World!";
+        
+        Message clonedMessage = cloneMessage(originalMessage);
+        
+        insert(clonedMessage);
+end

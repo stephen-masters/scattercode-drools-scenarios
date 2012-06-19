@@ -1,0 +1,9 @@
+package mypackage
+
+function Message cloneMessage(Message sourceMessage) {
+
+    Message targetMessage = new Message();
+    targetMessage.setText(sourceMessage.getText());
+    return targetMessage;
+
+}
