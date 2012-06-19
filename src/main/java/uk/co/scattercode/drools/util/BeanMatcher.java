@@ -8,7 +8,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Utility class designed to validate whether beans contain all the properties
  * and values defined in a set of filters.

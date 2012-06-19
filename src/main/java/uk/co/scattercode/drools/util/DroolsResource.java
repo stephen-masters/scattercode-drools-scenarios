@@ -2,7 +2,6 @@ package uk.co.scattercode.drools.util;
 
 import org.drools.builder.ResourceType;
 
-
 /**
  * A simple representation of a Drools resource.
  * 
