@@ -9,7 +9,7 @@ rule "Say hello"
         Message originalMessage = new Message();
         originalMessage.Text = "Hello, World!";
         
-        Message clonedMessage = cloneMessage(originalMessage);
+        Message clonedMessage = CloneMessage.cloneMessage(originalMessage);
         
         insert(clonedMessage);
 end
