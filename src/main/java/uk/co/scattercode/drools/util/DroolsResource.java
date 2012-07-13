@@ -9,64 +9,64 @@ import org.drools.builder.ResourceType;
  */
 public class DroolsResource {
 
-	private String path;
-	private ResourcePathType pathType;
-	private ResourceType type;
-	private String username = null;
-	private String password = null;
-	
-	public DroolsResource(String path, ResourcePathType pathType, ResourceType type) {
-		this.path = path;
-		this.pathType = pathType;
-		this.type = type;
-	}
-	
-	public DroolsResource(String path, ResourcePathType pathType, ResourceType type, String username, String password) {
-		this.path = path;
-		this.pathType = pathType;
-		this.type = type;
-		this.username = username;
-		this.password = password;
-	}
+    private String path;
+    private ResourcePathType pathType;
+    private ResourceType type;
+    private String username = null;
+    private String password = null;
 
-	public String getPath() {
-		return path;
-	}
+    public DroolsResource(String path, ResourcePathType pathType, ResourceType type) {
+        this.path = path;
+        this.pathType = pathType;
+        this.type = type;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
-	
-	public ResourcePathType getPathType() {
-		return pathType;
-	}
+    public DroolsResource(String path, ResourcePathType pathType, ResourceType type, String username, String password) {
+        this.path = path;
+        this.pathType = pathType;
+        this.type = type;
+        this.username = username;
+        this.password = password;
+    }
 
-	public void setPathType(ResourcePathType pathType) {
-		this.pathType = pathType;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public ResourceType getType() {
-		return type;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public void setType(ResourceType type) {
-		this.type = type;
-	}
+    public ResourcePathType getPathType() {
+        return pathType;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setPathType(ResourcePathType pathType) {
+        this.pathType = pathType;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public ResourceType getType() {
+        return type;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setType(ResourceType type) {
+        this.type = type;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

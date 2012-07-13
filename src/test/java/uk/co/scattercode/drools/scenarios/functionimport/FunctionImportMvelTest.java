@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.co.scattercode.drools.util.AbstractRulesTest;
+import uk.co.scattercode.drools.testing.AbstractStatefulSessionRulesTest;
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.FactMarshallingException;
 import static uk.co.scattercode.drools.util.ResourcePathType.*;
@@ -15,7 +15,7 @@ import static uk.co.scattercode.drools.util.ResourcePathType.*;
  * 
  * @author Stephen Masters
  */
-public class FunctionImportMvelTest extends AbstractRulesTest {
+public class FunctionImportMvelTest extends AbstractStatefulSessionRulesTest {
 
     private static Logger log = LoggerFactory.getLogger(FunctionImportMvelTest.class);
     
