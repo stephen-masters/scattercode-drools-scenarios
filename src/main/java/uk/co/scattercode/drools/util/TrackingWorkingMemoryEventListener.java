@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Stephen Masters
  */
-public class TrackingWorkingMemoryEventListener<T> extends
+public class TrackingWorkingMemoryEventListener extends
         DefaultWorkingMemoryEventListener {
 
     private static Logger log = LoggerFactory.getLogger(TrackingWorkingMemoryEventListener.class);

@@ -4,7 +4,7 @@ import static org.drools.builder.ResourceType.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import uk.co.scattercode.drools.testing.AbstractStatefulSessionRulesTest;
+import uk.co.scattercode.drools.util.AbstractStatefulSessionRulesTest;
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.FactMarshallingException;
 import static uk.co.scattercode.drools.util.ResourcePathType.*;

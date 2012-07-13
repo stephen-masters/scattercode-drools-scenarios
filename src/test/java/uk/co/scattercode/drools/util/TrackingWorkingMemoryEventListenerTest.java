@@ -2,7 +2,6 @@ package uk.co.scattercode.drools.util;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 import java.util.Map;
 
 import org.drools.KnowledgeBase;
@@ -74,7 +73,7 @@ public class TrackingWorkingMemoryEventListenerTest {
                 });
         
         TrackingAgendaEventListener agendaListener = new TrackingAgendaEventListener();
-        TrackingWorkingMemoryEventListener<Object> workingMemoryListener = new TrackingWorkingMemoryEventListener<Object>();
+        TrackingWorkingMemoryEventListener workingMemoryListener = new TrackingWorkingMemoryEventListener();
         
         StatefulKnowledgeSession session = knowledgeBase.newStatefulKnowledgeSession();
         session.addEventListener(agendaListener);
@@ -83,9 +82,9 @@ public class TrackingWorkingMemoryEventListenerTest {
         FactHandle productHandle = session.insert(new Product("Book", 20));
         FactHandle customerHandle = session.insert(new Customer("Jimbo"));
 
-        TrackingWorkingMemoryEventListener<Product> productListener = new TrackingWorkingMemoryEventListener<Product>(productHandle);
+        TrackingWorkingMemoryEventListener productListener = new TrackingWorkingMemoryEventListener(productHandle);
         session.addEventListener(productListener);
-        TrackingWorkingMemoryEventListener<Customer> customerListener = new TrackingWorkingMemoryEventListener<Customer>(customerHandle);
+        TrackingWorkingMemoryEventListener customerListener = new TrackingWorkingMemoryEventListener(customerHandle);
         session.addEventListener(customerListener);
 
         session.fireAllRules();
