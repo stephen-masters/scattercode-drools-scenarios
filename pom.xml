@@ -12,6 +12,14 @@
 
 	<description>A bundle of test scenarios, used to help work out solutions to fiddly problems.</description>
 
+  <repositories>
+      <repository>
+          <id>Version99</id>
+          <name>Version 99 Does Not Exist Maven repository</name>
+          <layout>default</layout>
+          <url>http://version99.qos.ch/</url>
+      </repository>
+  </repositories>
 
 	<!-- Shared version number properties -->
 	<properties>
@@ -73,8 +81,8 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
+			<version>4.8.2</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>

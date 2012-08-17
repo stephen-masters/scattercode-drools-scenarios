@@ -1,7 +1,6 @@
 package uk.co.scattercode.drools.scenarios.functionimport;
 
 import static org.drools.builder.ResourceType.*;
-import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +21,10 @@ public class FunctionImportMvelTest extends AbstractStatefulSessionRulesTest {
     @Override
     public DroolsResource[] getResources() {
         return new DroolsResource[] { 
-            new DroolsResource("rules/functionimport/MessageFact.drl", CLASSPATH, DRL),
-            new DroolsResource("rules/functionimport/CloneMessage.drl", CLASSPATH, DRL),
-            new DroolsResource("rules/functionimport/SayHelloRuleMvel.drl", CLASSPATH, DRL)
+            new DroolsResource("scenarios/functionimport/MessageFact.drl", CLASSPATH, DRL),
+            new DroolsResource("scenarios/functionimport/CloneMessage.drl", CLASSPATH, DRL),
+            new DroolsResource("scenarios/functionimport/SayHelloRuleMvel.drl", CLASSPATH, DRL)
         };
-    }
-    
-    @Before
-    public void initialize() {
-        super.initialize();
     }
     
     /**
