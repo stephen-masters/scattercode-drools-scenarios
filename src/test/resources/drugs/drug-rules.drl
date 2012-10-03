@@ -1,0 +1,35 @@
+dialect "mvel"
+
+rule "Brand Name"
+	no-loop true
+	agenda-group "AndroGel"
+    when
+    	drug : Drug( brandName == "AndroGel" )
+    then
+		log.info("Brand Name is AndroGel");
+end
+
+rule "Provider State" extends "Brand Name"
+    no-loop true
+    agenda-group "AndroGel"
+    when
+    	not Address( stateCode == "MA" && == "PR" )
+    then
+        log.info("State found is neither MA nor PR");
+end
+
+rule "Drug Strength" extends "Provider State"
+	no-loop true
+	auto-focus true
+	agenda-group "AndroGel"
+	when
+		program : Program()
+		eval( drug.strength == "20.25 mg/1.25 gram (1.62 %)" )
+	then
+		log.info("Drug Strength is 20.25 mg/1.25 gram (1.62 %)");
+		modify( program ) {
+			setProgramId( "610.contentId@samplemd.com" ),
+			setProgramName( "AndroGel 1.62% Savings Card" )
+		}
+		log.info("Prgram ID and Program Name is set for program Coupon for Androgel");
+end

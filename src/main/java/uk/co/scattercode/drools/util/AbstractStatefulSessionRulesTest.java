@@ -26,4 +26,12 @@ public abstract class AbstractStatefulSessionRulesTest {
 	public void endKnowledgeSession() {
 	}
 
+    protected void insert(Object o) {
+    	knowledgeEnvironment.knowledgeSession.insert(o);
+    }
+    
+    protected void fireAllRules() {
+    	knowledgeEnvironment.knowledgeSession.fireAllRules();
+    }
+
 }
