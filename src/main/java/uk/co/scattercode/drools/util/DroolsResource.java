@@ -9,64 +9,126 @@ import org.drools.builder.ResourceType;
  */
 public class DroolsResource {
 
-    private String path;
-    private ResourcePathType pathType;
-    private ResourceType type;
-    private String username = null;
-    private String password = null;
+	private String path;
+	private ResourcePathType pathType;
+	private ResourceType type;
+	private String username = null;
+	private String password = null;
 
-    public DroolsResource(String path, ResourcePathType pathType, ResourceType type) {
-        this.path = path;
-        this.pathType = pathType;
-        this.type = type;
-    }
+	/**
+	 * 
+	 * @param path
+	 *            The path to this resource.
+	 * @param pathType
+	 *            The type of path (FILE, URL, etc).
+	 * @param type
+	 *            The type of resource (DRL, Binary package, DSL, etc)
+	 */
+	public DroolsResource(String path, ResourcePathType pathType,
+			ResourceType type) {
+		this.path = path;
+		this.pathType = pathType;
+		this.type = type;
+	}
 
-    public DroolsResource(String path, ResourcePathType pathType, ResourceType type, String username, String password) {
-        this.path = path;
-        this.pathType = pathType;
-        this.type = type;
-        this.username = username;
-        this.password = password;
-    }
+	/**
+	 * Constructor for when the resource is secured. i.e. When the resource is a
+	 * Guvnor package being accessed via the REST API, and Guvnor requires a
+	 * user name and password to connect.
+	 * 
+	 * @param path
+	 *            The path to this resource.
+	 * @param pathType
+	 *            The type of path (FILE, URL, etc).
+	 * @param type
+	 *            The type of resource (DRL, Binary package, DSL, etc)
+	 * @param username
+	 *            The user name for connecting to the resource.
+	 * @param password
+	 *            The password for connecting to the resource.
+	 */
+	public DroolsResource(String path, ResourcePathType pathType,
+			ResourceType type, String username, String password) {
+		this.path = path;
+		this.pathType = pathType;
+		this.type = type;
+		this.username = username;
+		this.password = password;
+	}
 
-    public String getPath() {
-        return path;
-    }
+	/**
+	 * @return The path to this resource.
+	 */
+	public String getPath() {
+		return path;
+	}
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+	/**
+	 * @param path
+	 *            The path to this resource.
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-    public ResourcePathType getPathType() {
-        return pathType;
-    }
+	/**
+	 * @return The type of path (FILE, URL, etc).
+	 */
+	public ResourcePathType getPathType() {
+		return pathType;
+	}
 
-    public void setPathType(ResourcePathType pathType) {
-        this.pathType = pathType;
-    }
+	/**
+	 * @param pathType
+	 *            The type of path (FILE, URL, etc).
+	 */
+	public void setPathType(ResourcePathType pathType) {
+		this.pathType = pathType;
+	}
 
-    public ResourceType getType() {
-        return type;
-    }
+	/**
+	 * @return The type of resource (DRL, Binary package, DSL, etc)
+	 */
+	public ResourceType getType() {
+		return type;
+	}
 
-    public void setType(ResourceType type) {
-        this.type = type;
-    }
+	/**
+	 * @param type
+	 *            The type of resource (DRL, Binary package, DSL, etc)
+	 */
+	public void setType(ResourceType type) {
+		this.type = type;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	/**
+	 * @return The user name for connecting to the resource.
+	 */
+	public String getUsername() {
+		return username;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	/**
+	 * @param username
+	 *            The user name for connecting to the resource.
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	/**
+	 * @return The password for connecting to the resource.
+	 */
+	public String getPassword() {
+		return password;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	/**
+	 * @param password
+	 *            The password for connecting to the resource.
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 }

@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import uk.co.scattercode.drools.util.AbstractStatefulSessionRulesTest;
+import uk.co.scattercode.drools.test.AbstractStatefulSessionRulesTest;
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.FactMarshallingException;
 import static uk.co.scattercode.drools.util.ResourcePathType.*;

@@ -29,12 +29,15 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
 		Map<String, Object> ruleMetaDataMap = rule.getMetaData();
 		
 		activationList.add(new Activation(ruleName));
-		log.info("Rule fired: " + ruleName);
+		StringBuilder sb = new StringBuilder("Rule fired: " + ruleName);
 		
-		StringBuilder sb = new StringBuilder("A total of [" + ruleMetaDataMap.size() + "] meta-data items were available for rule " + ruleName);
-		for (String key : ruleMetaDataMap.keySet()) {
-			sb.append("\nkey=" + key + ", value=" + ruleMetaDataMap.get(key));
+		if (ruleMetaDataMap.size() > 0) {
+			sb.append("\n  With [" + ruleMetaDataMap.size() + "] meta-data:");
+			for (String key : ruleMetaDataMap.keySet()) {
+				sb.append("\n    key=" + key + ", value=" + ruleMetaDataMap.get(key));
+			}
 		}
+		
 		log.info(sb.toString());
 	}
 

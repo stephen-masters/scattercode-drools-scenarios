@@ -20,6 +20,9 @@ import org.drools.io.impl.UrlResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.scattercode.beans.BeanMatcher;
+import uk.co.scattercode.beans.BeanPropertyStringMatcher;
+
 /**
  * 
  * @author Stephen Masters
@@ -27,6 +30,8 @@ import org.slf4j.LoggerFactory;
 public class DroolsUtil {
 
     private static Logger log = LoggerFactory.getLogger(DroolsUtil.class);
+    
+    private static BeanMatcher matcher = new BeanPropertyStringMatcher();
 
     /**
      * Creates a new knowledge base using a collection of resources.
@@ -150,7 +155,7 @@ public class DroolsUtil {
             Object fact = event.getObject();
 
             if (factType.equals(fact.getClass().getSimpleName())) {
-                if (BeanMatcher.matches(fact, filters)) {
+                if (matcher.matches(fact, filters)) {
                     return fact;
                 }
             }

@@ -1,7 +1,5 @@
 package uk.co.scattercode.drools.util;
 
-import java.util.Collection;
-
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
@@ -23,9 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Initialises and encapsulates the various components required for the rules engine.
  * Includes initialising the knowledge base, creating a stateful session and attaching 
- * listeners for the default events. 
- * 
- * Note that the Spring context will inject this with a URL for the package in Guvnor.
+ * listeners for the default events.
  * 
  * @author Stephen Masters
  */
@@ -60,10 +56,24 @@ public class KnowledgeEnvironment {
         initialise(url);
     }
 
+    /**
+	 * This constructor sets up a user name and password. Handy if you're
+	 * connecting to Guvnor and it's locked down.
+	 * 
+	 * @param url The URL of the package via the Guvnor REST API.
+	 * @param username The Guvnor user name.
+	 * @param password The Guvnor password.
+	 */
     public KnowledgeEnvironment(String url, String username, String password) {
         initialise(url, username, password);
     }
 
+    /**
+	 * Initialises the knowledge environment by downloading the package from the
+	 * Guvnor REST interface, at the location defined in the URL.
+	 * 
+	 * @param url The URL of the package via the Guvnor REST API.
+	 */
     public void initialise(String url) {
         this.resources = new DroolsResource[] { 
             new DroolsResource(url,
@@ -73,6 +83,14 @@ public class KnowledgeEnvironment {
         initialise();
     }
 
+    /**
+     * Initialises the knowledge environment by downloading the package from the
+	 * Guvnor REST interface, at the location defined in the URL.
+	 * 
+     * @param url The URL of the package via the Guvnor REST API.
+	 * @param username The Guvnor user name.
+	 * @param password The Guvnor password.
+     */
     public void initialise(String url, String username, String password) {
         this.resources = new DroolsResource[] { 
                 new DroolsResource(url, 
@@ -84,17 +102,32 @@ public class KnowledgeEnvironment {
         initialise();
     }
 
+    /**
+	 * Initialises the knowledge environment with multiple
+	 * {@link DroolsResource} locations.
+	 * 
+	 * @param resources An array of {@link DroolsResource}.
+	 */
     public void initialise(DroolsResource[] resources) {
         this.resources = resources;
         initialise();
     }
 
+    /**
+	 * Initialises the knowledge environment with multiple
+	 * {@link DroolsResource} locations, which should have been defined
+	 * previously in the constructor.
+	 */
     public void initialise() {
         log.info("Initialising KnowledgeEnvironment with resources: " + this.resources);
         this.knowledgeBase = createKnowledgeBase(this.resources);
         initialiseSession();
     }
     
+    /**
+	 * Starts up a new stateless session, and attaches a number of working
+	 * memory listeners.
+	 */
     public void initialiseSession() {
         log.info("Initialising session...");
         if (this.knowledgeSession == null) {
@@ -109,6 +142,9 @@ public class KnowledgeEnvironment {
         }
     }
     
+    /**
+	 * Remove the existing working memory listeners, and set up some fresh ones.
+	 */
     public void clearListeners() {
         this.knowledgeSession.removeEventListener(this.agendaEventListener);
         this.knowledgeSession.removeEventListener(this.workingMemoryEventListener);
@@ -120,6 +156,9 @@ public class KnowledgeEnvironment {
         this.knowledgeSession.addEventListener(this.workingMemoryEventListener);
     }
     
+    /**
+     * Retracts all fact handles from working memory.
+     */
     public void retractAll() {
         log.info("Retracting all fact handles...");
         for (FactHandle handle : this.knowledgeSession.getFactHandles()) {
@@ -127,9 +166,20 @@ public class KnowledgeEnvironment {
         }
     }
     
+    /**
+     * Attaches a {@link WorkingMemoryEventListener} to the session.
+     * 
+     * @param listener The listener to be attached.
+     */
     public void addEventListener(WorkingMemoryEventListener listener) {
         knowledgeSession.addEventListener(listener);
     }
+    
+    /**
+     * Disconnects a {@link WorkingMemoryEventListener} from the session.
+     * 
+     * @param listener The listener to be disconnected.
+     */
     public void removeEventListener(WorkingMemoryEventListener listener) {
         knowledgeSession.removeEventListener(listener);
     }
@@ -190,21 +240,32 @@ public class KnowledgeEnvironment {
         KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(conf);
         knowledgeBase.addKnowledgePackages(builder.getKnowledgePackages());
 
-        // Output the packages in this knowledge base.
-        Collection<KnowledgePackage> packages = knowledgeBase.getKnowledgePackages();
+        // Log a description of the new knowledge base.
+        log.info(toString());
 
+        return knowledgeBase;
+    }
+
+    /**
+     * 
+     * @return A String detailing the packages and rules in this knowledge base.
+     */
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (KnowledgePackage p : packages) {
+        for (KnowledgePackage p : knowledgeBase.getKnowledgePackages()) {
             sb.append("\n  Package : " + p.getName());
             for (Rule r : p.getRules()) {
                 sb.append("\n    Rule: " + r.getName());
             }
         }
-        log.info("Knowledge base built with packages: " + sb.toString());
-
-        return knowledgeBase;
+        return "Knowledge base built with packages: " + sb.toString();
     }
-
+    
+    /**
+     * Iterates through the facts currently in working memory, and logs their details.
+     * 
+     * @param session The session to search for facts.
+     */
     public void printFacts(StatefulKnowledgeSession session) {
         StringBuilder sb = new StringBuilder();
         sb.append("\n************************************************************");

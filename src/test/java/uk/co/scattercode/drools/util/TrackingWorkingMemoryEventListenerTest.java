@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.co.scattercode.drools.util.ResourcePathType.CLASSPATH;
 
+import uk.co.scattercode.drools.test.AbstractStatefulSessionRulesTest;
 import uk.co.scattercode.drools.util.TrackingWorkingMemoryEventListener;
 import uk.co.scattercode.drools.util.testfacts.Product;
 import uk.co.scattercode.drools.util.testfacts.Customer;

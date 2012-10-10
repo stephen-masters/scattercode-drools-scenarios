@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.co.scattercode.drools.util.AbstractStatefulSessionRulesTest;
+import uk.co.scattercode.drools.test.AbstractStatefulSessionRulesTest;
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.FactMarshallingException;
 import static uk.co.scattercode.drools.util.ResourcePathType.*;
