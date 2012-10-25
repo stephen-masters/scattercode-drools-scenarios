@@ -1,4 +1,4 @@
-package uk.co.scattercode.drools.scenarios.ccygroups;
+package uk.co.scattercode.drools.scenarios.ccygroup;
 
 import java.math.BigDecimal;
 

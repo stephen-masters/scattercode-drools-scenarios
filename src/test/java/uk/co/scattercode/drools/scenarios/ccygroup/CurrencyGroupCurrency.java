@@ -1,10 +1,10 @@
-package uk.co.scattercode.drools.scenarios.ccygroups;
+package uk.co.scattercode.drools.scenarios.ccygroup;
 
 public class CurrencyGroupCurrency {
 
-	private String currency;
 	private String group;
-
+	private String currency;
+	
 	public CurrencyGroupCurrency() {
 	}
 

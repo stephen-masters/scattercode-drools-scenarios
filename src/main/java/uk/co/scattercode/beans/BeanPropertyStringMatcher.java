@@ -167,7 +167,7 @@ public class BeanPropertyStringMatcher implements BeanMatcher {
 	 * test whether one object truly equals the other.
 	 */
     protected boolean isEquivalent(Object o1, Object o2) {
-    	log.info("matching: " + o1 + " and " + o2);
+    	log.debug("    matching: " + o1 + " and " + o2);
         if (o1 == null && o2 == null) return true;
         if (o1 == o2) return true;
         if (o1.toString().equals(o2.toString())) return true;

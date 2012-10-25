@@ -16,6 +16,9 @@ import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.co.scattercode.beans.BeanMatcher;
+import uk.co.scattercode.beans.BeanPropertyFilter;
+import uk.co.scattercode.beans.BeanPropertyStringMatcher;
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.DroolsUtil;
 import uk.co.scattercode.drools.util.KnowledgeEnvironment;
@@ -29,6 +32,8 @@ import uk.co.scattercode.drools.util.KnowledgeEnvironment;
 public abstract class AbstractStatefulSessionRulesTest {
 
 	private static Logger log = LoggerFactory.getLogger(AbstractStatefulSessionRulesTest.class);
+	
+	private static final BeanMatcher beanMatcher = new BeanPropertyStringMatcher(); 
 	
 	@Resource
 	protected KnowledgeEnvironment knowledgeEnvironment 
@@ -67,8 +72,16 @@ public abstract class AbstractStatefulSessionRulesTest {
 	 * 
 	 * @param o A POJO fact.
 	 */
-    protected void insert(Object o) {
-    	knowledgeEnvironment.knowledgeSession.insert(o);
+    protected FactHandle insert(Object o) {
+    	return knowledgeEnvironment.knowledgeSession.insert(o);
+    }
+    
+    protected void update(FactHandle factHandle, Object o) {
+    	knowledgeEnvironment.knowledgeSession.update(factHandle, o);
+    }
+    
+    protected void retract(FactHandle handle) {
+    	knowledgeEnvironment.knowledgeSession.retract(handle);
     }
     
     /**
@@ -79,94 +92,77 @@ public abstract class AbstractStatefulSessionRulesTest {
     	knowledgeEnvironment.knowledgeSession.fireAllRules();
     }
 
-    protected void assertRuleFired(String ruleName) {
-        assertTrue("Rule [" + ruleName + "] should have fired.", 
-                DroolsUtil.ruleFired(
-                        this.knowledgeEnvironment.agendaEventListener.getActivationList(), 
-                        ruleName));
+    protected void assertRuleFired(String... ruleNames) {
+    	for (String ruleName : ruleNames) {
+	        assertTrue("Rule [" + ruleName + "] should have fired.", 
+	                DroolsUtil.ruleFired(
+	                        this.knowledgeEnvironment.agendaEventListener.getActivationList(), 
+	                        ruleName));
+    	}
     }
 
-    protected void assertRuleNotFired(String ruleName) {
-        assertFalse("Rule [" + ruleName + "] should not have fired.", 
-                DroolsUtil.ruleFired(
-                        this.knowledgeEnvironment.agendaEventListener.getActivationList(), 
-                        ruleName));
-    }
-
-    protected void assertFactIsInWorkingMemory(final String factName) {
-        ObjectFilter filter = new ObjectFilter() {
-            @Override
-            public boolean accept(Object object) {
-                return object.getClass().getSimpleName().equals(factName);
-            }
-        };
-        Collection<FactHandle> factHandles = this.knowledgeEnvironment.knowledgeSession.getFactHandles(filter);
-        assertTrue("There should have been at least one [" + factName + "] in working memory.", factHandles.size() > 0);
+    protected void assertRuleNotFired(String... ruleNames) {
+    	for (String ruleName : ruleNames) {
+	        assertFalse("Rule [" + ruleName + "] should not have fired.", 
+	                DroolsUtil.ruleFired(
+	                        this.knowledgeEnvironment.agendaEventListener.getActivationList(), 
+	                        ruleName));
+    	}
     }
 
     /**
-     * 
-     * @param factName The 
-     * @param expectedProperties A sequence of expected property name/value pairs.
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     */
-    protected void assertFactIsInWorkingMemory(final String factName, AbstractMap.SimpleEntry<String, Object>... expectedProperties) 
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	 * @param factClasses
+	 *            The simple names of the classes of the facts expected to be in
+	 *            working memory.
+	 */
+    protected void assertFactIsInWorkingMemory(final String... factClasses) {
+    	for (final String factName : factClasses) {
+	        ObjectFilter filter = new ObjectFilter() {
+	            @Override
+	            public boolean accept(Object object) {
+	                return object.getClass().getSimpleName().equals(factName);
+	            }
+	        };
+	        Collection<FactHandle> factHandles = this.knowledgeEnvironment.knowledgeSession.getFactHandles(filter);
+	        assertTrue("There should have been at least one [" + factName + "] in working memory.", factHandles.size() > 0);
+    	}
+    }
+
+    /**
+	 * A more complex assertion that a fact of the expected class with specified
+	 * properties is in working memory.
+	 * 
+	 * @param factName
+	 *            The simple name of the class of the fact we're looking for.
+	 * @param expectedProperties
+	 *            A sequence of expected property name/value pairs.
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 */
+    protected void assertFactIsInWorkingMemory(final String factClass, BeanPropertyFilter... expectedProperties) {
 
         ObjectFilter filter = new ObjectFilter() {
             @Override
             public boolean accept(Object object) {
-                return object.getClass().getSimpleName().equals(factName);
+                return object.getClass().getSimpleName().equals(factClass);
             }
         };
 
         Collection<FactHandle> factHandles = this.knowledgeEnvironment.knowledgeSession.getFactHandles(filter);
-        assertTrue("There should have been at least one [" + factName + "] in working memory.", factHandles.size() > 0);
+        assertTrue("There should have been at least one [" + factClass + "] in working memory.", factHandles.size() > 0);
 
-        log.debug(factHandles.size() + " " + factName + " found in working memory.");
+        log.debug(factHandles.size() + " " + factClass + " found in working memory.");
 
         for (FactHandle handle : factHandles) {
             Object fact = this.knowledgeEnvironment.knowledgeSession.getObject(handle);
-            if (factHasAllProperties(fact, expectedProperties)) {
+            if (beanMatcher.matches(fact, expectedProperties)) {
                 log.debug("Fact in working memory has all the expected properties.");
                 return;
             }
             log.debug("Fact didn't have all expected properties: " + DroolsUtil.objectDetails(fact));
         }
         fail("No facts found in working memory with the expected properties.");
-    }
-
-    private boolean factHasAllProperties(Object fact, AbstractMap.SimpleEntry<String, Object>... expectedProperties) 
-            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> factProperties = BeanUtils.describe(fact);
-
-        for (AbstractMap.SimpleEntry<String, Object> expectedProperty : expectedProperties) {
-            if (!factProperties.containsKey(expectedProperty.getKey())) {
-                // The fact doesn't even have this property.
-                return false;
-            }
-            Object actualValue = factProperties.get(expectedProperty.getKey());
-            Object expectedValue = expectedProperty.getValue();
-            log.debug("Comparing [" + expectedProperty.getKey() + "] actual [" + actualValue + "] to expected [" + expectedValue + "].");
-            if (!equivalent(actualValue, expectedValue)) {
-                return false;
-            }
-        }
-
-        // If there was an expected property missing or of incorrect value then we would have
-        // returned false by now. The actual fact must match have all of the expected properties.
-        return true;
-    }
-    
-    private boolean equivalent(Object o1, Object o2) {
-        if (o1 == null && o2 == null) return true;
-        if (o1 == o2) return true;
-        if (o1.equals(o2)) return true;
-        return false;
     }
 
 }

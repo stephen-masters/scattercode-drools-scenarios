@@ -121,6 +121,10 @@ public class KnowledgeEnvironment {
     public void initialise() {
         log.info("Initialising KnowledgeEnvironment with resources: " + this.resources);
         this.knowledgeBase = createKnowledgeBase(this.resources);
+        
+        // Log a description of the new knowledge base.
+        log.info(toString());
+        
         initialiseSession();
     }
     
@@ -239,9 +243,6 @@ public class KnowledgeEnvironment {
 
         KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase(conf);
         knowledgeBase.addKnowledgePackages(builder.getKnowledgePackages());
-
-        // Log a description of the new knowledge base.
-        log.info(toString());
 
         return knowledgeBase;
     }

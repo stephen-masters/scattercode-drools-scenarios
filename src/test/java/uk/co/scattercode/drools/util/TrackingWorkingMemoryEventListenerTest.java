@@ -1,15 +1,12 @@
 package uk.co.scattercode.drools.util;
 
-import static org.drools.builder.ResourceType.DRL;
 import static org.junit.Assert.*;
 
 import java.util.Map;
 
-import org.drools.KnowledgeBase;
 import org.drools.builder.ResourceType;
 import org.drools.event.rule.ObjectInsertedEvent;
 import org.drools.runtime.KnowledgeRuntime;
-import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.co.scattercode.drools.util.ResourcePathType.CLASSPATH;
 
 import uk.co.scattercode.drools.test.AbstractStatefulSessionRulesTest;
 import uk.co.scattercode.drools.util.TrackingWorkingMemoryEventListener;

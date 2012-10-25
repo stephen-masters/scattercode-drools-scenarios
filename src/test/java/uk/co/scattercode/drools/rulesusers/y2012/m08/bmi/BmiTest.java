@@ -19,7 +19,7 @@ public class BmiTest extends AbstractStatefulSessionRulesTest {
 	@Override
 	protected DroolsResource[] getResources() {
 		return new DroolsResource[] { new DroolsResource(
-				"rulesusers/y2012/m08/bmi/Bmi.drl", CLASSPATH, DRL) };
+				"rulesusers/y2012/m08/bmi/bmi.drl", CLASSPATH, DRL) };
 	}
 
 	/**
