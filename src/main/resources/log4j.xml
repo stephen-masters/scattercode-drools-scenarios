@@ -11,7 +11,7 @@
   </appender>
   
   <appender name="fileAppender" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File" value="compliance.log" />
+    <param name="File" value="app.log" />
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%d [%t] %p [%c{3}] %m%n" />
     </layout>

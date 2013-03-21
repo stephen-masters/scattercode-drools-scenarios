@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Stephen Masters
  */
-public class TrackingWorkingMemoryEventListener extends
-        DefaultWorkingMemoryEventListener {
+public class TrackingWorkingMemoryEventListener
+            extends DefaultWorkingMemoryEventListener {
 
     private static Logger log = LoggerFactory.getLogger(TrackingWorkingMemoryEventListener.class);
 
@@ -38,6 +38,7 @@ public class TrackingWorkingMemoryEventListener extends
     private List<Map<String, Object>> factChanges = new ArrayList<Map<String,Object>>();
 
     private FactHandle handleFilter;
+    private Class<?> classFilter;
 
     /**
      * Void constructor sets the listener to record all working memory events
@@ -58,28 +59,39 @@ public class TrackingWorkingMemoryEventListener extends
         this.handleFilter = handle;
     }
     
+    public TrackingWorkingMemoryEventListener(Class<?> classFilter) {
+        this.handleFilter = null;
+        this.classFilter = classFilter;
+    }
+
     @Override
     public void objectInserted(final ObjectInsertedEvent event) {
-        if (handleFilter == null || event.getFactHandle() == handleFilter) {
+        if ((handleFilter == null  && classFilter == null)
+                || event.getFactHandle() == handleFilter
+                || event.getObject().getClass().equals(classFilter)) {
             insertions.add(event);
             allEvents.add(event);
-            log.info("Insertion: " + DroolsUtil.objectDetails(event.getObject()));
+            log.debug("Insertion: " + DroolsUtil.objectDetails(event.getObject()));
         }
     }
 
     @Override
     public void objectRetracted(final ObjectRetractedEvent event) {
-        if (handleFilter == null || event.getFactHandle() == handleFilter) {
+        if ((handleFilter == null  && classFilter == null) 
+                || event.getFactHandle() == handleFilter
+                || event.getOldObject().getClass().equals(classFilter)) {
             retractions.add(event);
             allEvents.add(event);
-            log.info("Retraction: " + DroolsUtil.objectDetails(event.getOldObject()));
+            log.debug("Retraction: " + DroolsUtil.objectDetails(event.getOldObject()));
         }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void objectUpdated(final ObjectUpdatedEvent event) {
-        if (handleFilter == null || event.getFactHandle() == handleFilter) {
+        if ((handleFilter == null  && classFilter == null) 
+                || event.getFactHandle() == handleFilter
+                || event.getObject().getClass().equals(classFilter)) {
             updates.add(event);
             allEvents.add(event);
 
@@ -89,7 +101,7 @@ public class TrackingWorkingMemoryEventListener extends
             } catch (Exception e) {
                 log.error("Unable to get object details for tracking: " + DroolsUtil.objectDetails(fact), e);
             }
-            log.info("Update: " + DroolsUtil.objectDetails(event.getObject()));
+            log.debug("Update: " + DroolsUtil.objectDetails(event.getObject()));
         }
     }
 
@@ -121,7 +133,6 @@ public class TrackingWorkingMemoryEventListener extends
     }
 
     public String getPrintableDetail() {
-        
         StringBuilder report = new StringBuilder(
                 "TrackingWorkingMemoryEventListener: " + "insertions=["
                         + insertions.size() + "], " + "retractions=["

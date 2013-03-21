@@ -5,24 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>uk.co.scattercode</groupId>
-	<artifactId>scattercode-drools-scenarios</artifactId>
-	<name>scattercode-drools-scenarios</name>
-	<version>1.0.0-SNAPSHOT</version>
+	<artifactId>sctrcd-drools-scenarios</artifactId>
+	<name>Scattercode Drools Scenarios</name>
 	<packaging>jar</packaging>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<description>A bundle of test scenarios, used to help work out solutions to fiddly problems.</description>
 
-  <repositories>
-      <repository>
-          <id>Version99</id>
-          <name>Version 99 Does Not Exist Maven repository</name>
-          <layout>default</layout>
-          <url>http://version99.qos.ch/</url>
-      </repository>
-  </repositories>
-
 	<!-- Shared version number properties -->
 	<properties>
+		<aspectj.version>1.6.12</aspectj.version>
 		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<drools.version>5.4.0.Final</drools.version>
@@ -81,7 +73,10 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
+			<version>4.8.1</version>
+			<!-- This project contains classes for working with JUnit. Therefore, 
+				it must have them in main scope in addition to test scope. However, we don't 
+				want the dependency to end up in release packages, hence provided. -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -112,16 +107,6 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12</version>
-				<configuration>
-					<includes>
-						<include>**/*Test.java</include>
-					</includes>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -157,70 +142,6 @@
 
 	<reporting>
 		<plugins>
-			<!-- Code Coverage Reports -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.sonar</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>2.5</version>
-			</plugin>
-			<plugin>
-				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>2.4.3</version>
-				<configuration>
-					<aggregate>true</aggregate>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jdepend-maven-plugin</artifactId>
-				<version>2.0-beta-2</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<aggregate>true</aggregate>
-					<breakiterator>true</breakiterator>
-					<header>Scattercode Ltd</header>
-					<source>1.6</source>
-					<groups>
-						<group>
-							<title>Drools demo scenarios</title>
-							<packages>uk.co.scattercode</packages>
-						</group>
-					</groups>
-					<javadocDirectory>${basedir}/src/main/javadoc</javadocDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>2.1.2</version>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.3.3</version>
-				<configuration>
-					<findbugsXmlOutput>true</findbugsXmlOutput>
-					<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
-					<xmlOutput>true</xmlOutput>
-				</configuration>
-			</plugin>
 		</plugins>
 	</reporting>
 
