@@ -1,0 +1,5 @@
+
+declare Tick
+    @role(event)
+    tickTime: java.util.Date
+end

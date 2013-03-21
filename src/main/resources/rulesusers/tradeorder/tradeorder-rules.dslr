@@ -1,0 +1,10 @@
+import rulesusers.tradeorder.facts.*;
+
+rule "Close old trades"
+when
+    For each tick
+    Given a trade order
+    - older than "2m"
+then
+    Close trade
+end
