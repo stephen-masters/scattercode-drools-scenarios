@@ -36,18 +36,18 @@ public class TradeOrderRulesTest {
 
     @Test
     public void shouldInsertTradeOrder() throws InstantiationException, IllegalAccessException {
+        tick();
+        
         Date newDate = new Date(new Date().getTime() - 10);
         Date oldDate = new Date(new Date().getTime() - 600000);
 
         TradeOrder newOrder = new TradeOrder(newDate, "OPEN");
         kenv.insert(newOrder);
-        tick();
         kenv.fireAllRules();
         DroolsTestUtil.assertRuleNotFired(kenv, "Close old trades");
 
         TradeOrder oldOrder = new TradeOrder(oldDate, "OPEN");
         kenv.insert(oldOrder);
-        tick();
         kenv.fireAllRules();
         DroolsTestUtil.assertRuleFired(kenv, "Close old trades");
     }
