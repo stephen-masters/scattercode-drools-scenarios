@@ -1,4 +1,6 @@
-import rulesusers.tradeorder.facts.*;
+package rules.tradeorder;
+
+import rules.tradeorder.facts.*;
 
 rule "Close old trades"
 when
