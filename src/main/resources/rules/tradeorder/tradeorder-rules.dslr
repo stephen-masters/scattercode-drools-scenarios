@@ -3,6 +3,7 @@ package rules.tradeorder;
 import rules.tradeorder.facts.*;
 
 rule "Close old trades"
+    no-loop
 when
     For each tick
     Given a trade order

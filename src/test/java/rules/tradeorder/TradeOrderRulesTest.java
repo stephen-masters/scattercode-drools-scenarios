@@ -46,7 +46,7 @@ public class TradeOrderRulesTest {
         DroolsTestUtil.assertRuleNotFired(kenv, "Close old trades");
 
         TradeOrder oldOrder = new TradeOrder(oldDate, "OPEN");
-        kenv.insert(order);
+        kenv.insert(oldOrder);
         tick();
         kenv.fireAllRules();
         DroolsTestUtil.assertRuleFired(kenv, "Close old trades");

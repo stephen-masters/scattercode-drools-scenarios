@@ -1,4 +1,4 @@
-package rulesusers.tradeorder.facts;
+package rules.tradeorder.facts;
 
 import java.util.Date;
 
