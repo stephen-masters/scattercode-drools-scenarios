@@ -1,0 +1,15 @@
+package diet
+
+rule "Warn when my meal has too many calories"
+when
+    I am given a meal of more than "1000" "calories"
+then
+    Warn that the meal is too big
+end
+
+rule "Warn when my meal has too many diet club points"
+when
+    I am given a meal of more than "11" "dietClubPoints"
+then
+    Warn that the meal is too big
+end
