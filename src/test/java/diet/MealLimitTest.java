@@ -14,7 +14,7 @@ public class MealLimitTest {
 
     private KnowledgeEnvironment kenv = new KnowledgeEnvironment(
             new DroolsResource[] {
-                    //new DroolsResource("rules/diet.drl", CLASSPATH, DRL),
+                    new DroolsResource("rules/diet.drl", CLASSPATH, DRL),
                     new DroolsResource("rules/diet.dsl", CLASSPATH, DSL),
                     new DroolsResource("rules/diet.dslr", CLASSPATH, DSLR) });
 
@@ -26,7 +26,7 @@ public class MealLimitTest {
     }
 
     @Test
-    public void shouldCheckLimits() throws InstantiationException, IllegalAccessException {
+    public void shouldCheckLimitsWithBasicDrl() throws InstantiationException, IllegalAccessException {
         Meal meal = new Meal(1500, 13);
         
         kenv.insert(meal);
