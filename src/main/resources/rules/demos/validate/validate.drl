@@ -1,0 +1,16 @@
+package demos.validate
+
+rule "first name contains invalid characters"
+    when $n: FirstName(valid == true, value not matches "(?:\\p{IsAlphabetic}|\\p{IsPunctuation}|\\p{IsWhiteSpace})*")
+    then
+        modify($n) { setValid(false) }
+        insert(new Message($n, "The first name is invalid!"));
+end
+
+rule "first name is valid"
+    when
+        $n: Value(valid == true)
+        $m: Message(fact == $n)
+    then
+        retract($m)
+end
