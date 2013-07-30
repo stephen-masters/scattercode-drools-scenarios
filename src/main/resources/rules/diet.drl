@@ -1,9 +1,0 @@
-package diet
-
-rule "Warn when my meal is too large"
-when
-    $meal: Meal($calories: calories > 1000)
-    $unit: String() from "calories"
-then
-    insert(new MealTooBigWarning("That meal will push you over your 1000 " + $unit + " limit for today."));
-end
