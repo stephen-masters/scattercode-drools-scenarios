@@ -1,0 +1,8 @@
+package broken
+
+// Refers to a fact type that does not exist, so the knowledge base cannot be built.
+rule "never compiles"
+    when
+        NoSuchFact()
+    then
+end

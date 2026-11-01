@@ -1,0 +1,8 @@
+package demos.validate
+
+// With property change support, Drools registers itself as a listener on each
+// FirstName it is given, and every setter call updates working memory, so the
+// caller never has to call update().
+declare FirstName
+    @propertyChangeSupport
+end
