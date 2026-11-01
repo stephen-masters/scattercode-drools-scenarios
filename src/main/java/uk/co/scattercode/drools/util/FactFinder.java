@@ -3,11 +3,9 @@ package uk.co.scattercode.drools.util;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.drools.runtime.ObjectFilter;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.FactHandle;
-
 import uk.co.scattercode.beans.BeanMatcher;
 import uk.co.scattercode.beans.BeanPropertyFilter;
 
@@ -18,7 +16,7 @@ public class FactFinder {
     /**
      * An assertion that a fact of the expected class with specified properties
      * is in working memory.
-     * 
+     *
      * @param kenv
      *            A {@link KnowledgeEnvironment} containing a
      *            {@link KnowledgeSession} in which we are looking for the fact.
@@ -30,16 +28,15 @@ public class FactFinder {
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    public Collection<Object> findFacts(final KnowledgeEnvironment kenv,
-            final String factClass,
-            final BeanPropertyFilter... expectedProperties) {
+    public Collection<Object> findFacts(
+            final KnowledgeEnvironment kenv, final String factClass, final BeanPropertyFilter... expectedProperties) {
         return findFacts(kenv.getKnowledgeSession(), factClass, expectedProperties);
     }
 
     /**
      * An assertion that a fact of the expected class with specified properties
      * is in working memory.
-     * 
+     *
      * @param session
      *            A {@link KnowledgeSession} in which we are looking for the
      *            fact.
@@ -51,7 +48,8 @@ public class FactFinder {
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
      */
-    public Collection<Object> findFacts(final StatefulKnowledgeSession session,
+    public Collection<Object> findFacts(
+            final StatefulKnowledgeSession session,
             final String factClass,
             final BeanPropertyFilter... expectedProperties) {
 
@@ -72,5 +70,4 @@ public class FactFinder {
         }
         return facts;
     }
-
 }

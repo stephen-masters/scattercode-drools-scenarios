@@ -5,10 +5,10 @@ import java.beans.PropertyChangeSupport;
 
 public class Value<T> {
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-    
+
     private T value;
     private boolean valid;
-    
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         this.pcs.addPropertyChangeListener(listener);
     }

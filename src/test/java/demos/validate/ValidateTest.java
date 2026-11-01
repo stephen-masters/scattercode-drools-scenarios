@@ -5,15 +5,13 @@ import static uk.co.scattercode.drools.util.ResourcePathType.*;
 
 import org.drools.runtime.rule.FactHandle;
 import org.junit.Test;
-
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.KnowledgeEnvironment;
 
 public class ValidateTest {
 
     private KnowledgeEnvironment kenv = new KnowledgeEnvironment(
-            new DroolsResource[] {
-                    new DroolsResource("rules/demos/validate/validate.drl", CLASSPATH, DRL)});
+            new DroolsResource[] {new DroolsResource("rules/demos/validate/validate.drl", CLASSPATH, DRL)});
 
     @Test
     public void shouldValidate() {
@@ -35,5 +33,4 @@ public class ValidateTest {
 
         assert !name.isValid();
     }
-    
 }

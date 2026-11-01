@@ -3,20 +3,13 @@ package uk.co.scattercode.drools.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseConfiguration;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
 import org.drools.builder.ResourceType;
 import org.drools.conf.EventProcessingOption;
 import org.drools.definition.KnowledgePackage;
 import org.drools.definition.rule.Rule;
 import org.drools.event.rule.AgendaEventListener;
 import org.drools.event.rule.WorkingMemoryEventListener;
-import org.drools.io.ResourceFactory;
-import org.drools.io.impl.UrlResource;
 import org.drools.runtime.ObjectFilter;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.rule.AgendaFilter;
@@ -26,9 +19,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Initialises and encapsulates the various components required for the rules engine.
- * Includes initialising the knowledge base, creating a stateful session and attaching 
+ * Includes initialising the knowledge base, creating a stateful session and attaching
  * listeners for the default events.
- * 
+ *
  * @author Stephen Masters
  */
 public class KnowledgeEnvironment {
@@ -46,7 +39,7 @@ public class KnowledgeEnvironment {
      * Constructor supporting setting up a knowledge environment using just a
      * list of resources, which may be local. Particularly useful when testing
      * DRL files.
-     * 
+     *
      * @param resources
      */
     public KnowledgeEnvironment(DroolsResource[] resources) {
@@ -55,7 +48,7 @@ public class KnowledgeEnvironment {
 
     /**
      * Constructor.
-     * 
+     *
      * @param url The URL of the package via the Guvnor REST API.
      */
     public KnowledgeEnvironment(String url) {
@@ -65,7 +58,7 @@ public class KnowledgeEnvironment {
     /**
      * This constructor sets up a user name and password. Handy if you're
      * connecting to Guvnor and it's locked down.
-     * 
+     *
      * @param url The URL of the package via the Guvnor REST API.
      * @param username The Guvnor user name.
      * @param password The Guvnor password.
@@ -77,41 +70,33 @@ public class KnowledgeEnvironment {
     /**
      * Initialises the knowledge environment by downloading the package from the
      * Guvnor REST interface, at the location defined in the URL.
-     * 
+     *
      * @param url The URL of the package via the Guvnor REST API.
      */
     public void initialise(String url) {
-        this.resources = new DroolsResource[] { 
-            new DroolsResource(url,
-                    ResourcePathType.URL, 
-                    ResourceType.PKG
-        )};
+        this.resources = new DroolsResource[] {new DroolsResource(url, ResourcePathType.URL, ResourceType.PKG)};
         initialise();
     }
 
     /**
      * Initialises the knowledge environment by downloading the package from the
      * Guvnor REST interface, at the location defined in the URL.
-     * 
+     *
      * @param url The URL of the package via the Guvnor REST API.
      * @param username The Guvnor user name.
      * @param password The Guvnor password.
      */
     public void initialise(String url, String username, String password) {
-        this.resources = new DroolsResource[] { 
-                new DroolsResource(url, 
-                        ResourcePathType.URL, 
-                        ResourceType.PKG, 
-                        username, 
-                        password
-        )};
+        this.resources = new DroolsResource[] {
+            new DroolsResource(url, ResourcePathType.URL, ResourceType.PKG, username, password)
+        };
         initialise();
     }
 
     /**
      * Initialises the knowledge environment with multiple
      * {@link DroolsResource} locations.
-     * 
+     *
      * @param resources An array of {@link DroolsResource}.
      */
     public void initialise(DroolsResource[] resources) {
@@ -126,10 +111,8 @@ public class KnowledgeEnvironment {
      */
     public void initialise() {
         log.info("Initialising KnowledgeEnvironment with resources: " + this.resources);
-        this.kbase = DroolsUtil.createKnowledgeBase(
-                this.resources, 
-                EventProcessingOption.STREAM);
-        
+        this.kbase = DroolsUtil.createKnowledgeBase(this.resources, EventProcessingOption.STREAM);
+
         initialiseSession();
     }
 
@@ -184,7 +167,7 @@ public class KnowledgeEnvironment {
     public FactHandle insert(Object o) {
         return this.ksession.insert(o);
     }
-    
+
     public List<FactHandle> insert(Collection<Object> facts) {
         List<FactHandle> handles = new ArrayList<FactHandle>();
         for (Object fact : facts) {
@@ -199,16 +182,16 @@ public class KnowledgeEnvironment {
 
     /**
      * Attaches an {@link AgendaEventListener} to the session.
-     * 
+     *
      * @param listener The listener to be attached.
      */
     public void addEventListener(AgendaEventListener listener) {
         ksession.addEventListener(listener);
     }
-    
+
     /**
      * Disconnects an {@link AgendaEventListener} from the session.
-     * 
+     *
      * @param listener The listener to be disconnected.
      */
     public void removeEventListener(AgendaEventListener listener) {
@@ -221,12 +204,12 @@ public class KnowledgeEnvironment {
             retract(handle);
         }
     }
-    
+
     /**
      * Retract all fact handles from working memory, which match an
-     * {@link ObjectFilter}. For example, to retract all facts of a 
+     * {@link ObjectFilter}. For example, to retract all facts of a
      * class called "MyObject":
-     * 
+     *
      * <pre>
      * retractAll(new ObjectFilter() {
      *     public boolean accept(Object object) {
@@ -235,7 +218,7 @@ public class KnowledgeEnvironment {
      *     }
      * });
      * </pre>
-     * 
+     *
      * @param filter
      *            The {@link ObjectFilter}.
      */
@@ -249,7 +232,7 @@ public class KnowledgeEnvironment {
     /**
      * The insert method accepts a list of arguments and returns a list of fact
      * handles. Therefore this is retract method which can accept such a list.
-     * 
+     *
      * @param handles
      *            The fact handles you wish to retract.
      */
@@ -262,7 +245,6 @@ public class KnowledgeEnvironment {
     public void retract(FactHandle handle) {
         ksession.retract(handle);
     }
-
 
     public Object getObject(FactHandle handle) {
         if (handle == null) {
@@ -278,18 +260,18 @@ public class KnowledgeEnvironment {
 
     /**
      * Find all handles to facts in working memory.
-     * 
+     *
      * @return A collection of fact handles.
      */
     public Collection<FactHandle> getFactHandles() {
         return ksession.getFactHandles();
     }
-    
+
     /**
      * Find all handles to facts in working memory matching an
      * {@link ObjectFilter}. For example, to find all facts of a class called
      * "MyObject":
-     * 
+     *
      * <pre>
      * getFactHandles(new ObjectFilter() {
      *     public boolean accept(Object object) {
@@ -298,7 +280,7 @@ public class KnowledgeEnvironment {
      *     }
      * });
      * </pre>
-     * 
+     *
      * @param filter
      *            The {@link ObjectFilter}.
      * @return A collection of facts matching the filter.
@@ -313,7 +295,7 @@ public class KnowledgeEnvironment {
 
     /**
      * Attaches a {@link WorkingMemoryEventListener} to the session.
-     * 
+     *
      * @param listener The listener to be attached.
      */
     public void addEventListener(WorkingMemoryEventListener listener) {
@@ -322,7 +304,7 @@ public class KnowledgeEnvironment {
 
     /**
      * Disconnects a {@link WorkingMemoryEventListener} from the session.
-     * 
+     *
      * @param listener The listener to be disconnected.
      */
     public void removeEventListener(WorkingMemoryEventListener listener) {
@@ -330,7 +312,7 @@ public class KnowledgeEnvironment {
     }
 
     /**
-     * 
+     *
      * @return A String detailing the packages and rules in this knowledge base.
      */
     public String toString() {
@@ -346,7 +328,7 @@ public class KnowledgeEnvironment {
 
     /**
      * Iterates through the facts currently in working memory, and logs their details.
-     * 
+     *
      * @param session The session to search for facts.
      */
     public void printFacts(StatefulKnowledgeSession session) {
@@ -376,8 +358,7 @@ public class KnowledgeEnvironment {
         return agendaEventListener;
     }
 
-    public void setAgendaEventListener(
-            TrackingAgendaEventListener agendaEventListener) {
+    public void setAgendaEventListener(TrackingAgendaEventListener agendaEventListener) {
         this.agendaEventListener = agendaEventListener;
     }
 
@@ -385,9 +366,7 @@ public class KnowledgeEnvironment {
         return workingMemoryEventListener;
     }
 
-    public void setWorkingMemoryEventListener(
-            TrackingWorkingMemoryEventListener workingMemoryEventListener) {
+    public void setWorkingMemoryEventListener(TrackingWorkingMemoryEventListener workingMemoryEventListener) {
         this.workingMemoryEventListener = workingMemoryEventListener;
     }
-
 }
