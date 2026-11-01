@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Console logging for the tests, in the same pattern the log4j configuration used. -->
+<configuration>
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d [%t] %p [%logger{3}] %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="uk.co.scattercode" level="info"/>
+
+  <root level="info">
+    <appender-ref ref="stdout"/>
+  </root>
+</configuration>

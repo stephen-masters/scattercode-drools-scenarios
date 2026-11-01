@@ -3,9 +3,9 @@ package uk.co.scattercode.drools.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.drools.definition.rule.Rule;
-import org.drools.event.rule.AfterActivationFiredEvent;
-import org.drools.event.rule.DefaultAgendaEventListener;
+import org.kie.api.definition.rule.Rule;
+import org.kie.api.event.rule.AfterMatchFiredEvent;
+import org.kie.api.event.rule.DefaultAgendaEventListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,8 +21,8 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
     private List<Activation> activationList = new ArrayList<Activation>();
 
     @Override
-    public void afterActivationFired(AfterActivationFiredEvent event) {
-        Rule rule = event.getActivation().getRule();
+    public void afterMatchFired(AfterMatchFiredEvent event) {
+        Rule rule = event.getMatch().getRule();
 
         String ruleName = rule.getName();
         Map<String, Object> ruleMetaDataMap = rule.getMetaData();
@@ -40,8 +40,17 @@ public class TrackingAgendaEventListener extends DefaultAgendaEventListener {
         log.debug(sb.toString());
     }
 
+    /**
+     * @param ruleName The exact name of a rule.
+     * @return True if a rule of that name has fired since the last reset.
+     */
     public boolean isRuleFired(String ruleName) {
-        return activationList.contains(ruleName);
+        for (Activation activation : activationList) {
+            if (activation.getRuleName().equals(ruleName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void reset() {

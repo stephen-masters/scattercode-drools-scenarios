@@ -22,7 +22,7 @@ public class FactMarshallingException extends Exception {
     }
 
     public FactMarshallingException(String message, Throwable cause) {
-        super(cause);
+        super(message, cause);
     }
 
     public FactMarshallingException(Object o, Throwable cause) {

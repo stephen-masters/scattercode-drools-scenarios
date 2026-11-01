@@ -1,20 +1,22 @@
 package demos.validate;
 
-import static org.drools.builder.ResourceType.*;
-import static uk.co.scattercode.drools.util.ResourcePathType.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.kie.api.io.ResourceType.DRL;
+import static uk.co.scattercode.drools.util.ResourcePathType.CLASSPATH;
 
-import org.drools.runtime.rule.FactHandle;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.kie.api.runtime.rule.FactHandle;
 import uk.co.scattercode.drools.util.DroolsResource;
 import uk.co.scattercode.drools.util.KnowledgeEnvironment;
 
-public class ValidateTest {
+class ValidateTest {
 
-    private KnowledgeEnvironment kenv = new KnowledgeEnvironment(
+    private final KnowledgeEnvironment kenv = new KnowledgeEnvironment(
             new DroolsResource[] {new DroolsResource("rules/demos/validate/validate.drl", CLASSPATH, DRL)});
 
     @Test
-    public void shouldValidate() {
+    void shouldValidate() {
         FirstName name = new FirstName();
         name.setValue("John");
         name.setValid(true);
@@ -23,7 +25,7 @@ public class ValidateTest {
 
         kenv.fireAllRules();
 
-        assert name.isValid();
+        assertTrue(name.isValid());
 
         name.setValue("John 123");
         name.setValid(true);
@@ -31,6 +33,6 @@ public class ValidateTest {
         kenv.update(handle, name);
         kenv.fireAllRules();
 
-        assert !name.isValid();
+        assertFalse(name.isValid());
     }
 }

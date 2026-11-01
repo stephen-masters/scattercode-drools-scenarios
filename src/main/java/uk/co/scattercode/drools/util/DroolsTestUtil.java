@@ -1,9 +1,8 @@
 package uk.co.scattercode.drools.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.lang.reflect.InvocationTargetException;
 import uk.co.scattercode.beans.BeanPropertyFilter;
 
 public class DroolsTestUtil {
@@ -25,8 +24,8 @@ public class DroolsTestUtil {
     public static void assertRuleFired(KnowledgeEnvironment kenv, String... ruleNames) {
         for (String ruleName : ruleNames) {
             assertTrue(
-                    "Rule [" + ruleName + "] should have fired.",
-                    DroolsUtil.ruleFired(kenv.findActivations(), ruleName));
+                    DroolsUtil.ruleFired(kenv.findActivations(), ruleName),
+                    "Rule [" + ruleName + "] should have fired.");
         }
     }
 
@@ -38,8 +37,8 @@ public class DroolsTestUtil {
     public static void assertRuleNotFired(KnowledgeEnvironment kenv, String... ruleNames) {
         for (String ruleName : ruleNames) {
             assertFalse(
-                    "Rule [" + ruleName + "] should not have fired.",
-                    DroolsUtil.ruleFired(kenv.findActivations(), ruleName));
+                    DroolsUtil.ruleFired(kenv.findActivations(), ruleName),
+                    "Rule [" + ruleName + "] should not have fired.");
         }
     }
 
@@ -47,21 +46,22 @@ public class DroolsTestUtil {
      * A more complex assertion that a fact of the expected class with specified
      * properties is in working memory.
      *
-     * @param factName
+     * @param factClass
      *            The simple name of the class of the fact we're looking for.
      * @param expectedProperties
      *            A sequence of expected property name/value pairs.
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
      */
     public static void assertFactIsInWorkingMemory(
             KnowledgeEnvironment kenv, final String factClass, BeanPropertyFilter... expectedProperties) {
-        assertTrue(factFinder.findFacts(kenv, factClass, expectedProperties).size() > 0);
+        assertTrue(
+                factFinder.findFacts(kenv, factClass, expectedProperties).size() > 0,
+                "A [" + factClass + "] fact should be in working memory.");
     }
 
     public static void assertFactNotInWorkingMemory(
             KnowledgeEnvironment kenv, final String factClass, BeanPropertyFilter... expectedProperties) {
-        assertTrue(factFinder.findFacts(kenv, factClass, expectedProperties).size() == 0);
+        assertTrue(
+                factFinder.findFacts(kenv, factClass, expectedProperties).isEmpty(),
+                "No [" + factClass + "] fact should be in working memory.");
     }
 }

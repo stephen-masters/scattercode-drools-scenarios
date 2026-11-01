@@ -1,22 +1,24 @@
 package uk.co.scattercode.drools.util;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.beanutils.BeanUtils;
-import org.drools.event.rule.DefaultWorkingMemoryEventListener;
-import org.drools.event.rule.ObjectInsertedEvent;
-import org.drools.event.rule.ObjectRetractedEvent;
-import org.drools.event.rule.ObjectUpdatedEvent;
-import org.drools.event.rule.WorkingMemoryEvent;
-import org.drools.runtime.rule.FactHandle;
+import org.kie.api.event.rule.DefaultRuleRuntimeEventListener;
+import org.kie.api.event.rule.ObjectDeletedEvent;
+import org.kie.api.event.rule.ObjectInsertedEvent;
+import org.kie.api.event.rule.ObjectUpdatedEvent;
+import org.kie.api.event.rule.RuleRuntimeEvent;
+import org.kie.api.runtime.rule.FactHandle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * When validation rules fire, they should insert a TradeValidationAnnotation
- * into the working memory. This class listens for these events, and adds them
- * to a list so that a client can query all the alerts raised for a request.
+ * Records the insertions, retractions and updates in a session's working
+ * memory, so that a client can query everything that happened to the facts
+ * for a request. Drools now calls this a rule runtime event listener, and a
+ * retraction a deletion.
  * <p>
  * You should probably avoid using this outside testing, as the contained lists
  * of events will grow and grow.
@@ -24,13 +26,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author Stephen Masters
  */
-public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEventListener {
+public class TrackingWorkingMemoryEventListener extends DefaultRuleRuntimeEventListener {
 
     private static Logger log = LoggerFactory.getLogger(TrackingWorkingMemoryEventListener.class);
 
-    private List<WorkingMemoryEvent> allEvents = new ArrayList<WorkingMemoryEvent>();
+    private List<RuleRuntimeEvent> allEvents = new ArrayList<RuleRuntimeEvent>();
     private List<ObjectInsertedEvent> insertions = new ArrayList<ObjectInsertedEvent>();
-    private List<ObjectRetractedEvent> retractions = new ArrayList<ObjectRetractedEvent>();
+    private List<ObjectDeletedEvent> retractions = new ArrayList<ObjectDeletedEvent>();
     private List<ObjectUpdatedEvent> updates = new ArrayList<ObjectUpdatedEvent>();
 
     private List<Map<String, Object>> factChanges = new ArrayList<Map<String, Object>>();
@@ -57,6 +59,13 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
         this.handleFilter = handle;
     }
 
+    /**
+     * Constructor which sets up an event filter. The listener will only record
+     * events for facts of exactly this class.
+     *
+     * @param classFilter
+     *            The class to filter on.
+     */
     public TrackingWorkingMemoryEventListener(Class<?> classFilter) {
         this.handleFilter = null;
         this.classFilter = classFilter;
@@ -74,7 +83,7 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
     }
 
     @Override
-    public void objectRetracted(final ObjectRetractedEvent event) {
+    public void objectDeleted(final ObjectDeletedEvent event) {
         if ((handleFilter == null && classFilter == null)
                 || event.getFactHandle() == handleFilter
                 || event.getOldObject().getClass().equals(classFilter)) {
@@ -84,7 +93,6 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void objectUpdated(final ObjectUpdatedEvent event) {
         if ((handleFilter == null && classFilter == null)
@@ -95,7 +103,7 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
 
             Object fact = event.getObject();
             try {
-                factChanges.add(BeanUtils.describe(fact));
+                factChanges.add(new HashMap<String, Object>(BeanUtils.describe(fact)));
             } catch (Exception e) {
                 log.error("Unable to get object details for tracking: " + DroolsUtil.objectDetails(fact), e);
             }
@@ -103,7 +111,7 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
         }
     }
 
-    public List<WorkingMemoryEvent> getAllEvents() {
+    public List<RuleRuntimeEvent> getAllEvents() {
         return allEvents;
     }
 
@@ -111,7 +119,7 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
         return insertions;
     }
 
-    public List<ObjectRetractedEvent> getRetractions() {
+    public List<ObjectDeletedEvent> getRetractions() {
         return retractions;
     }
 
@@ -131,15 +139,12 @@ public class TrackingWorkingMemoryEventListener extends DefaultWorkingMemoryEven
     }
 
     public String getPrintableDetail() {
-        StringBuilder report = new StringBuilder("TrackingWorkingMemoryEventListener: " + "insertions=["
-                + insertions.size() + "], " + "retractions=["
-                + retractions.size() + "], " + "updates=["
-                + updates.size() + "]");
+        StringBuilder report = new StringBuilder(getPrintableSummary());
 
         for (ObjectInsertedEvent event : insertions) {
             report.append("\n" + DroolsUtil.objectDetails(event.getObject()));
         }
-        for (ObjectRetractedEvent event : retractions) {
+        for (ObjectDeletedEvent event : retractions) {
             report.append("\n" + DroolsUtil.objectDetails(event.getOldObject()));
         }
         for (ObjectUpdatedEvent event : updates) {

@@ -1,6 +1,6 @@
 package uk.co.scattercode.drools.util;
 
-import org.drools.builder.ResourceType;
+import org.kie.api.io.ResourceType;
 
 /**
  * A simple representation of a Drools resource.
@@ -22,7 +22,7 @@ public class DroolsResource {
      * @param pathType
      *            The type of path (FILE, URL, etc).
      * @param type
-     *            The type of resource (DRL, Binary package, DSL, etc)
+     *            The type of resource (DRL, DSL, decision table, etc)
      */
     public DroolsResource(String path, ResourcePathType pathType, ResourceType type) {
         this.path = path;
@@ -31,16 +31,15 @@ public class DroolsResource {
     }
 
     /**
-     * Constructor for when the resource is secured. i.e. When the resource is a
-     * Guvnor package being accessed via the REST API, and Guvnor requires a
-     * user name and password to connect.
+     * Constructor for when the resource is secured, i.e. a URL resource behind
+     * HTTP basic authentication.
      *
      * @param path
      *            The path to this resource.
      * @param pathType
      *            The type of path (FILE, URL, etc).
      * @param type
-     *            The type of resource (DRL, Binary package, DSL, etc)
+     *            The type of resource (DRL, DSL, decision table, etc)
      * @param username
      *            The user name for connecting to the resource.
      * @param password
@@ -85,7 +84,7 @@ public class DroolsResource {
     }
 
     /**
-     * @return The type of resource (DRL, Binary package, DSL, etc)
+     * @return The type of resource (DRL, DSL, decision table, etc)
      */
     public ResourceType getType() {
         return type;
@@ -93,7 +92,7 @@ public class DroolsResource {
 
     /**
      * @param type
-     *            The type of resource (DRL, Binary package, DSL, etc)
+     *            The type of resource (DRL, DSL, decision table, etc)
      */
     public void setType(ResourceType type) {
         this.type = type;
@@ -127,5 +126,10 @@ public class DroolsResource {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "DroolsResource[type=" + type + ", pathType=" + pathType + ", path=" + path + "]";
     }
 }
