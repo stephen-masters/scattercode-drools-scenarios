@@ -73,7 +73,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
+			<version>4.13.1</version>
 			<!-- This project contains classes for working with JUnit. Therefore, 
 				it must have them in main scope in addition to test scope. However, we don't 
 				want the dependency to end up in release packages, hence provided. -->
