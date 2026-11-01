@@ -21,7 +21,7 @@ public class Message {
     }
 
     public Message(Object fact, String message) {
-        setFact(fact);
-        setMessage(message);
+        this.fact = fact;
+        this.message = message;
     }
 }
